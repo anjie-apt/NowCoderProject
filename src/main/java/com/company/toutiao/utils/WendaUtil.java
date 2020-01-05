@@ -1,7 +1,6 @@
 package com.company.toutiao.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,9 +8,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
-public class TouTiaoUtil {
+public class WendaUtil
+{
 
-    private static final Logger logger = LoggerFactory.getLogger(TouTiaoUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(WendaUtil.class);
+    public static final int ANONYMOUS_USERID = 3;
 
     public static String MD5(String password) {
         try

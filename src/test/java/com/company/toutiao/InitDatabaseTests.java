@@ -1,13 +1,12 @@
 package com.company.toutiao;
 
-import com.company.toutiao.dao.NewsDAO;
+import com.company.toutiao.dao.QuestionDAO;
 import com.company.toutiao.dao.UserDAO;
-import com.company.toutiao.model.News;
+import com.company.toutiao.model.Question;
 import com.company.toutiao.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.Random;
@@ -21,7 +20,7 @@ class InitDatabaseTests {
 	private UserDAO userDAO;
 
 	@Autowired
-	private NewsDAO newsDAO;
+	private QuestionDAO questionDAO;
 	@Test
 	void contextLoads() {
 		Random random = new Random();
@@ -34,17 +33,14 @@ class InitDatabaseTests {
 			user.setSalt("");
 			userDAO.addUser(user);
 
-			News news = new News();
-			news.setCommentCount(i);
+			Question question = new Question();
+			question.setCommentCount(i);
 			Date date = new Date();
 			date.setTime(date.getTime() + 1000*3600*5*i);
-			news.setCreatedDate(date);
-			news.setImage(String.format("http://images.nowcoder.com/head"));
-			news.setLikeCount(i+1);
-			news.setUserId(i+1);
-			news.setTitle(String.format("TITLE{%d}", i));
-			news.setLink(String.format("http://nowcoder.com/%d.html", i));
-			newsDAO.addNews(news);
+			question.setCreatedDate(date);
+			question.setUserId(i+1);
+			question.setTitle(String.format("TITLE{%d}", i));
+			questionDAO.addQuestion(question);
 
 
 			user.setPassword("newpassword");

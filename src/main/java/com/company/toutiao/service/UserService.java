@@ -4,7 +4,7 @@ import com.company.toutiao.dao.LoginTicketDAO;
 import com.company.toutiao.dao.UserDAO;
 import com.company.toutiao.model.LoginTicket;
 import com.company.toutiao.model.User;
-import com.company.toutiao.utils.TouTiaoUtil;
+import com.company.toutiao.utils.WendaUtil;
 import org.apache.ibatis.annotations.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class UserService {
         user.setName(username);
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
         user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt()));
-        user.setPassword(TouTiaoUtil.MD5(password + user.getSalt()));
+        user.setPassword(WendaUtil.MD5(password + user.getSalt()));
         userDAO.addUser(user);
         logger.info("用户注册成功！");
 
@@ -79,7 +79,7 @@ public class UserService {
             res.put("msg", "用户名不存在");
         }
         //如果用户存在，进行加密验证，使用和MD5把输入的密码和对应的盐值进行加密，判断是否等于对应的用户密码
-        if (!TouTiaoUtil.MD5(password + user.getSalt()).equals(user.getPassword())){
+        if (!WendaUtil.MD5(password + user.getSalt()).equals(user.getPassword())){
             res.put("msg", "密码错误");
             return res;
         }

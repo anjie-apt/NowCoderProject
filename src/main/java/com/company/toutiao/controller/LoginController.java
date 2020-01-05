@@ -1,11 +1,8 @@
 package com.company.toutiao.controller;
 
 
-import com.company.toutiao.model.News;
-import com.company.toutiao.model.ViewObject;
-import com.company.toutiao.service.NewsService;
+import com.company.toutiao.service.QuestionService;
 import com.company.toutiao.service.UserService;
-import com.company.toutiao.utils.TouTiaoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,7 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
-    NewsService newsService;
+    QuestionService questionService;
 
     @Autowired
     UserService userService;
