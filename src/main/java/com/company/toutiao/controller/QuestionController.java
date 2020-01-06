@@ -3,15 +3,16 @@ package com.company.toutiao.controller;
 import com.company.toutiao.model.HostHolder;
 import com.company.toutiao.model.Question;
 import com.company.toutiao.service.QuestionService;
+import com.company.toutiao.service.UserService;
 import com.company.toutiao.utils.WendaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @Controller
 public class QuestionController {
@@ -23,6 +24,15 @@ public class QuestionController {
     @Autowired
     HostHolder hostHolder;
 
+    @Autowired
+    UserService userService;
+
+    /**
+     *
+     * @param title
+     * @param content
+     * @return
+     */
     @RequestMapping(value = "/question/add", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title,
@@ -32,8 +42,10 @@ public class QuestionController {
             question.setContent(content);
             question.setTitle(title);
             question.setCommentCount(0);
+            question.setCreatedDate(new Date());
             if (hostHolder.getUser() == null){
-                question.setUserId(WendaUtil.ANONYMOUS_USERID);
+                return WendaUtil.getJSONString(999);
+                //question.setUserId(WendaUtil.ANONYMOUS_USERID);
             } else {
                 question.setUserId(hostHolder.getUser().getId());
             }
@@ -45,6 +57,14 @@ public class QuestionController {
             logger.error("增加问题失败" + e.getMessage());
         }
         return WendaUtil.getJSONString(1, "失败");
+    }
 
+    @RequestMapping(value = "/question/{qid}")
+    public String questionDetail(Model model,
+                                 @PathVariable("qid") int qid) {
+        Question question = questionService.selectById(qid);
+        model.addAttribute("question", question);
+        model.addAttribute("user", userService.getUser(question.getUserId()));
+        return "detail";
     }
 }

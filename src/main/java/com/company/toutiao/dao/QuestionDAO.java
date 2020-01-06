@@ -19,6 +19,8 @@ public interface QuestionDAO
             ")  values (#{title}, #{content}, #{userId}, #{createdDate}, #{commentCount})"})
     int addQuestion(Question question);
 
+    @Select({"select ", SELECT_FIELDS, "from ", TABLE_NAME, " where id=#{qid}"})
+    Question selectById(int qid);
 
     List<Question> selectByUserIdAndOffset(@Param("userId") int userId,
                                            @Param("offset") int offset,
