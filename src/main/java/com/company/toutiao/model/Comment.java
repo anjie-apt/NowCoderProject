@@ -4,11 +4,12 @@ import java.util.Date;
 
 public class Comment {
     private int id;
-    private String content;
     private int userId;
-    private Date createDate;
+    private String content;
+    private Date createdDate;
     private int entityId;
-    private String entityType;
+    private int entityType;
+    private int status;
 
     public int getId()
     {
@@ -18,16 +19,6 @@ public class Comment {
     public void setId(int id)
     {
         this.id = id;
-    }
-
-    public String getContent()
-    {
-        return content;
-    }
-
-    public void setContent(String content)
-    {
-        this.content = content;
     }
 
     public int getUserId()
@@ -40,14 +31,24 @@ public class Comment {
         this.userId = userId;
     }
 
-    public Date getCreateDate()
+    public String getContent()
     {
-        return createDate;
+        return content;
     }
 
-    public void setCreateDate(Date createDate)
+    public void setContent(String content)
     {
-        this.createDate = createDate;
+        this.content = content;
+    }
+
+    public Date getCreatedDate()
+    {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate)
+    {
+        this.createdDate = createdDate;
     }
 
     public int getEntityId()
@@ -60,13 +61,23 @@ public class Comment {
         this.entityId = entityId;
     }
 
-    public String getEntityType()
+    public int getEntityType()
     {
         return entityType;
     }
 
-    public void setEntityType(String entityType)
+    public void setEntityType(int entityType)
     {
         this.entityType = entityType;
+    }
+
+    public int getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(int status)
+    {
+        this.status = status;
     }
 }

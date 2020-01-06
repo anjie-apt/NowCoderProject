@@ -8,9 +8,7 @@ import java.util.List;
 
 @Mapper
 @Component
-public interface QuestionDAO
-{
-
+public interface QuestionDAO {
     String TABLE_NAME = "question";
     String INSERT_FIELDS = " title,  content, user_id, created_date, comment_count ";
     String SELECT_FIELDS = " id," + INSERT_FIELDS;

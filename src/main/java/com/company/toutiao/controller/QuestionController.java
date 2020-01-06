@@ -44,12 +44,13 @@ public class QuestionController {
             question.setCommentCount(0);
             question.setCreatedDate(new Date());
             if (hostHolder.getUser() == null){
-                return WendaUtil.getJSONString(999);
-                //question.setUserId(WendaUtil.ANONYMOUS_USERID);
+//                return WendaUtil.getJSONString(999);
+                question.setUserId(WendaUtil.ANONYMOUS_USERID);
             } else {
                 question.setUserId(hostHolder.getUser().getId());
             }
             if (questionService.addQuestion(question) > 0) {
+                logger.info("添加问题成功");
                 return WendaUtil.getJSONString(0);
             }
 
