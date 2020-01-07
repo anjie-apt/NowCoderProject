@@ -28,6 +28,9 @@ public class UserService {
         return userDAO.selectById(id);
     }
 
+    public User selectByName(String name) {
+        return userDAO.selectByName(name);
+    }
     public void addUser(User user){
         userDAO.addUser(user);
     }

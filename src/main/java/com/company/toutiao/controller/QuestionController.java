@@ -1,7 +1,7 @@
 package com.company.toutiao.controller;
 
-import com.company.toutiao.model.HostHolder;
-import com.company.toutiao.model.Question;
+import com.company.toutiao.model.*;
+import com.company.toutiao.service.CommentService;
 import com.company.toutiao.service.QuestionService;
 import com.company.toutiao.service.UserService;
 import com.company.toutiao.utils.WendaUtil;
@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class QuestionController {
@@ -26,6 +28,8 @@ public class QuestionController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    CommentService commentService;
 
     /**
      *
@@ -65,7 +69,17 @@ public class QuestionController {
                                  @PathVariable("qid") int qid) {
         Question question = questionService.selectById(qid);
         model.addAttribute("question", question);
-        model.addAttribute("user", userService.getUser(question.getUserId()));
+
+        List<Comment> commentList = commentService.getCommentByEntity(qid, EntityType.ENTITY_QUESTION);
+        List<ViewObject> comments = new ArrayList<ViewObject>();
+        for (Comment comment : commentList) {
+            ViewObject vo = new ViewObject();
+            vo.set("comment", comment);
+            vo.set("user", userService.getUser(comment.getUserId()));
+            comments.add(vo);
+        }
+
+        model.addAttribute("comments", comments);
         return "detail";
     }
 }

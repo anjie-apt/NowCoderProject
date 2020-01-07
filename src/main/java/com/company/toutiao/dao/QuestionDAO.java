@@ -24,9 +24,9 @@ public interface QuestionDAO {
                                            @Param("offset") int offset,
                                            @Param("limit") int limit);
 
-//    @Update({"update ", TABLE_NAME, " set password=#{password} where id = #{id}"})
-//    void updatePassword(User user);
-//
+    @Update({"update ", TABLE_NAME, " set comment_count=#{commentCount} where id=#{id}"})
+    int updateCommentCount(@Param("id") int id, @Param("commentCount") int commentCount);
+
 //    @Delete({"delete from", TABLE_NAME, "where id = #{id}"})
 //    void deleteById(int id);
 }

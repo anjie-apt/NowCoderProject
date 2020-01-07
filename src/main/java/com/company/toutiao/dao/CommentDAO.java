@@ -33,4 +33,7 @@ public interface CommentDAO {
     @Update({"update ", TABLE_NAME, "set status=#{status} where id=#{id}"})
     int updateStatus(@Param("commentId") int commentId,
                      @Param("status") int status);
+    @Update({"update ", TABLE_NAME, " set comment_count=#{commentCount} where id=#{id}"})
+    int updateCommentCount(@Param("id") int id,
+                           @Param("commentCount") int commentCount);
 }

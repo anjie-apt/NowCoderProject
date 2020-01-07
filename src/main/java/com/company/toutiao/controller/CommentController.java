@@ -4,6 +4,7 @@ import com.company.toutiao.model.Comment;
 import com.company.toutiao.model.EntityType;
 import com.company.toutiao.model.HostHolder;
 import com.company.toutiao.service.CommentService;
+import com.company.toutiao.service.QuestionService;
 import com.company.toutiao.utils.WendaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,8 @@ public class CommentController {
     HostHolder hostHolder;
     @Autowired
     CommentService commentService;
+    @Autowired
+    QuestionService questionService;
 
     @RequestMapping(path = "/addComment", method = RequestMethod.POST )
     public String addComment(@RequestParam("questionId") int questionId,
@@ -49,6 +52,8 @@ public class CommentController {
             comment.setEntityId(questionId);
             comment.setEntityType(EntityType.ENTITY_QUESTION);
             commentService.addComment(comment);
+            int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
+            questionService.updateCommentCount(comment.getEntityId(), count);
             logger.info("添加评论成功");
         } catch (Exception e) {
             logger.error("增加评论失败" + e.getMessage());

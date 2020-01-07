@@ -1,11 +1,14 @@
 package com.company.toutiao.interceptor;
 
 
+import com.company.toutiao.controller.CommentController;
 import com.company.toutiao.dao.LoginTicketDAO;
 import com.company.toutiao.dao.UserDAO;
 import com.company.toutiao.model.LoginTicket;
 import com.company.toutiao.model.HostHolder;
 import com.company.toutiao.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -19,6 +22,8 @@ import java.util.Date;
 
 @Component
 public class PassportInterceptor implements HandlerInterceptor {
+    private static final Logger logger = LoggerFactory.getLogger(PassportInterceptor.class);
+
     @Autowired
     LoginTicketDAO loginTicketDAO;
     @Autowired
@@ -43,22 +48,24 @@ public class PassportInterceptor implements HandlerInterceptor {
             for (Cookie cookie : request.getCookies()){
                 if (cookie.getName().equals("ticket")){
                     ticket = cookie.getValue();
+                    logger.info("找到ticket");
                     break;
                 }
             }
         }
+
         //根据找到的ticket去数据库中查询，判断登录ticket是否有效（不为空&没有过期&状态码为0）
         if (ticket != null){
+            logger.info("ticket: "+ticket);
             LoginTicket loginTicket = loginTicketDAO.selectByTicket(ticket);
+            logger.info("loginTicekt: " + loginTicket.getTicket());
+            logger.info("ticket对应的用户ID" + loginTicket.getUserId());
             if (loginTicket == null || loginTicket.getExpired().before(new Date()) || loginTicket.getStatus() != 0){
                 return true;
             }
             User user = userDAO.selectById(loginTicket.getUserId());
             hostHolder.setUser(user);
-
         }
-
-
         return true;
     }
 
