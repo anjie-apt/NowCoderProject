@@ -27,14 +27,12 @@ public interface MessageDAO {
                                         @Param("offset") int offset,
                                         @Param("limit") int limit);
 
-//    @Select({"select count(id) from ", TABLE_NAME, " where entity_id=#{entityID} and entity_type=#{entityType} "})
-//    int getCommentCount(@Param("id") int id,
-//                        @Param("commentCount") int commentCount);
-//
-//    @Update({"update ", TABLE_NAME, "set status=#{status} where id=#{id}"})
-//    int updateStatus(@Param("commentId") int commentId,
-//                     @Param("status") int status);
-//    @Update({"update ", TABLE_NAME, " set comment_count=#{commentCount} where id=#{id}"})
-//    int updateCommentCount(@Param("id") int id,
-//                           @Param("commentCount") int commentCount)
+
+    @Select({"select ", INSERT_FIELDS, " , count(id) as id from ( select * from ", TABLE_NAME, " where from_id=#{userId} or to_id=#{userId} order by created_date desc ) tt group by conversation_id order by created_date desc limit #{offset}, #{limit}"})
+    List<Message> getConversationList(@Param("userId") int userId,
+                                        @Param("offset") int offset,
+                                        @Param("limit") int limit);
+    @Select({"select count(id) from ", TABLE_NAME, " where has_read = 0 and to_id=#{userId} and conversation_id=#{conversationId}"})
+    int getConversationUnreadCount(@Param("userId") int userId,
+                                   @Param("conversationId") String conversationId);
 }
