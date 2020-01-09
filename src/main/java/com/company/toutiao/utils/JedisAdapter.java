@@ -87,6 +87,20 @@ public class JedisAdapter implements InitializingBean {
         return false;
     }
 
+    public void lpush (String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            jedis.lpush(key, value);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
     public static void print(int index, Object object) {
         System.out.println(String.format("%d, %s", index, object.toString()));
     }
@@ -209,6 +223,7 @@ public class JedisAdapter implements InitializingBean {
         User user2 = JSON.parseObject(value, User.class);
         print(38, user2);
     }
+
 
 
 }
