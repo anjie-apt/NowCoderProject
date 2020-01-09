@@ -2,6 +2,7 @@ package com.company.toutiao.controller;
 
 import com.company.toutiao.model.*;
 import com.company.toutiao.service.CommentService;
+import com.company.toutiao.service.LikeService;
 import com.company.toutiao.service.QuestionService;
 import com.company.toutiao.service.UserService;
 import com.company.toutiao.utils.WendaUtil;
@@ -30,6 +31,8 @@ public class QuestionController {
     UserService userService;
     @Autowired
     CommentService commentService;
+    @Autowired
+    LikeService likeService;
 
     /**
      *
@@ -75,6 +78,12 @@ public class QuestionController {
         for (Comment comment : commentList) {
             ViewObject vo = new ViewObject();
             vo.set("comment", comment);
+            if (hostHolder.getUser() == null) {
+                vo.set("liked", 0);
+            } else {
+                vo.set("liked", likeService.getLikeStatus(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, comment.getId()));
+            }
+            vo.set("likeCount", likeService.getLikeCount(EntityType.ENTITY_COMMENT, comment.getId()));
             vo.set("user", userService.getUser(comment.getUserId()));
             comments.add(vo);
         }
