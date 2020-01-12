@@ -1,6 +1,9 @@
 package com.company.toutiao.controller;
 
 
+import com.company.toutiao.async.EventModel;
+import com.company.toutiao.async.EventProducer;
+import com.company.toutiao.async.EventType;
 import com.company.toutiao.service.QuestionService;
 import com.company.toutiao.service.UserService;
 import org.slf4j.Logger;
@@ -27,6 +30,9 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EventProducer eventProducer;
 
     /**
      * 注册逻辑
@@ -101,6 +107,10 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket", map.get("ticket"));
                 cookie.setPath("/");
                 response.addCookie(cookie);
+
+                eventProducer.fireEvent(new EventModel(EventType.LOGIN).
+                        setExt("username", userName).
+                        setActorId(Integer.parseInt(map.get("userId"))));
                 //next跳转页面如果不为空，直接跳转到next
                 if (!StringUtils.isEmpty(next)) {
                     return "redirect:" + next;

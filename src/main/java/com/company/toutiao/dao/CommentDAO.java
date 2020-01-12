@@ -19,6 +19,9 @@ public interface CommentDAO {
                  ")  values (#{userId}, #{content}, #{createdDate}, #{entityId}, #{entityType}, #{status})"})
     int addComment(Comment comment);
 
+    @Select({"select ", SELECT_FIELDS, "from ", TABLE_NAME, "where id=#{id}"})
+    Comment getCommentById (int id);
+
     @Select({"select ", SELECT_FIELDS, "from ", TABLE_NAME, " where id=#{qid}"})
     Question selectById(int qid);
 
@@ -36,4 +39,6 @@ public interface CommentDAO {
     @Update({"update ", TABLE_NAME, " set comment_count=#{commentCount} where id=#{id}"})
     int updateCommentCount(@Param("id") int id,
                            @Param("commentCount") int commentCount);
+
+
 }

@@ -19,6 +19,7 @@ public class EventProducer {
              */
             String json = JSONObject.toJSONString(eventModel);
             String key = RedisKeyUtil.getEventQUeueKey();
+            //把事件推到异步队列中去
             jedisAdapter.lpush(key, json);
             return true;
 
