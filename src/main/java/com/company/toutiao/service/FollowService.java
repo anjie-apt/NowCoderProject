@@ -105,4 +105,6 @@ public class FollowService {
         String followerKey = RedisKeyUtil.getFollowerKey(entityType, entityId);
         return jedisAdapter.zscore(followerKey, String.valueOf(userId)) != null;
     }
+
+    //TODO:实现共同关注
 }
