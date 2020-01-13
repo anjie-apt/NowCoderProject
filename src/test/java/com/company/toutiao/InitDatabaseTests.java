@@ -2,8 +2,10 @@ package com.company.toutiao;
 
 import com.company.toutiao.dao.QuestionDAO;
 import com.company.toutiao.dao.UserDAO;
+import com.company.toutiao.model.EntityType;
 import com.company.toutiao.model.Question;
 import com.company.toutiao.model.User;
+import com.company.toutiao.service.FollowService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +23,10 @@ class InitDatabaseTests {
 
 	@Autowired
 	private QuestionDAO questionDAO;
+
+	@Autowired
+	FollowService followService;
+
 	@Test
 	void contextLoads() {
 		Random random = new Random();
@@ -32,6 +38,11 @@ class InitDatabaseTests {
 			user.setPassword("");
 			user.setSalt("");
 			userDAO.addUser(user);
+
+			//互相关注
+			for (int j = 1; j < i; j++) {
+				followService.follow(j, EntityType.ENTITY_USER, i);
+			}
 
 			Question question = new Question();
 			question.setCommentCount(i);

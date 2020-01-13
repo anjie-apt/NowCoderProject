@@ -44,6 +44,10 @@ public class QuestionService {
         return questionDAO.selectByUserIdAndOffset(id, offset,limit);
     }
 
+//    public Question getQuestionById(int questionId) {
+//        return questionDAO.getQuestionById(questionId);
+//    }
+
 
     public int updateCommentCount(int id, int count) {
         return questionDAO.updateCommentCount(id, count);
